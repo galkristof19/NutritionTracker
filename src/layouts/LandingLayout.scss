@@ -1,0 +1,135 @@
+@use '../styles/tokens' as *;
+
+.landing-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, $color-bg-surface 0%, $color-bg-page 60%);
+  color: $color-text-primary;
+}
+
+.landing-layout__skip {
+  position: absolute;
+  left: $space-3;
+  top: -3.5rem;
+  z-index: $z-toast;
+  background-color: $color-primary-500;
+  color: $color-text-inverse;
+  text-decoration: none;
+  padding: $space-2 $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  &:focus-visible {
+    top: $space-3;
+    outline: 2px solid $color-text-inverse;
+    outline-offset: 2px;
+  }
+}
+
+.landing-layout__header {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background-color: color-mix(in srgb, #{$color-bg-surface} 92%, white 8%);
+  border-bottom: 1px solid $color-border-default;
+  box-shadow: $shadow-xs;
+}
+
+.landing-layout__brand {
+  text-decoration: none;
+  font-family: $font-family-heading;
+  font-size: clamp(#{$font-size-lg}, 4.5vw, #{$font-size-2xl});
+  font-weight: $font-weight-bold;
+  color: $color-primary-500;
+}
+
+.landing-layout__actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.landing-layout__link,
+.landing-layout__cta {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-md;
+  text-decoration: none;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-3;
+}
+
+.landing-layout__link {
+  color: $color-text-secondary;
+
+  &:hover {
+    background-color: $color-bg-muted;
+    color: $color-primary-500;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary-500;
+    outline-offset: 2px;
+  }
+}
+
+.landing-layout__cta {
+  color: $color-text-inverse;
+  background-color: $color-primary-500;
+  box-shadow: $shadow-sm;
+
+  &:hover {
+    background-color: $color-primary-600;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary-600;
+    outline-offset: 2px;
+  }
+}
+
+.landing-layout__main {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: $space-6 $space-4 $space-10;
+  flex: 1;
+}
+
+.landing-layout__footer {
+  padding: $space-4;
+  border-top: 1px solid $color-border-default;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .landing-layout__header {
+    padding: $space-3 $space-8;
+  }
+
+  .landing-layout__main {
+    padding: $space-8 $space-6 $space-12;
+  }
+}
+
+@media (min-width: 1200px) {
+  .landing-layout__header {
+    padding: $space-3 $space-12;
+  }
+
+  .landing-layout__main {
+    padding: $space-10 $space-8 $space-16;
+  }
+}

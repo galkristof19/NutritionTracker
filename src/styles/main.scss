@@ -1,0 +1,41 @@
+@use './tokens' as *;
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: $font-family-base;
+  font-size: $font-size-md;
+  line-height: $line-height-base;
+  background-color: $color-bg-page;
+  color: $color-text-primary;
+  -webkit-font-smoothing: antialiased;
+}
+
+// ── User layout ───────────────────────────────────────────────────────────────
+// Mobile: main content needs padding-bottom so nothing hides under the fixed nav
+
+.user-layout {
+  min-height: 100vh;
+
+  &__main {
+    padding: $space-4;
+    // 4rem = nav height, extra space-4 so last content is readable
+    padding-bottom: calc(4rem + #{$space-6});
+
+    @media (min-width: 768px) {
+      padding: $space-6;
+      padding-bottom: $space-6; // no bottom nav on tablet+
+    }
+
+    @media (min-width: 1200px) {
+      padding: $space-8 $space-12;
+    }
+  }
+}
