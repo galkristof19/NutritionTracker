@@ -1,0 +1,143 @@
+@use '../../styles/tokens' as *;
+
+@keyframes onboarding-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.onboarding-page {
+  width: min(100%, 40rem);
+  margin: $space-6 auto;
+  padding: $space-5;
+  display: grid;
+  gap: $space-4;
+  background-color: $color-bg-surface;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+}
+
+.onboarding-page__title {
+  margin: 0;
+  font-family: $font-family-heading;
+  font-size: clamp(#{$font-size-2xl}, 6vw, #{$font-size-4xl});
+  line-height: $line-height-tight;
+}
+
+.onboarding-page__subtitle,
+.onboarding-page__progress {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+}
+
+.onboarding-card {
+  display: grid;
+  gap: $space-3;
+  padding: $space-4;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background-color: $color-bg-page;
+  animation: onboarding-card-in 220ms ease-out;
+}
+
+.onboarding-card__question {
+  margin: 0;
+  font-size: clamp(#{$font-size-lg}, 4vw, #{$font-size-2xl});
+  font-family: $font-family-heading;
+}
+
+.onboarding-card__label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}
+
+.onboarding-card__input {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid $color-border-strong;
+  border-radius: $radius-md;
+  padding: $space-2 $space-3;
+  font-family: $font-family-base;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  background-color: $color-bg-surface;
+
+  &:focus-visible {
+    outline: none;
+    border-color: $color-primary-500;
+    box-shadow: 0 0 0 3px color-mix(in srgb, #{$color-primary-500} 18%, transparent);
+  }
+}
+
+.onboarding-page__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.onboarding-page__button {
+  min-height: 2.75rem;
+  min-width: 6.5rem;
+  border-radius: $radius-md;
+  font-family: $font-family-base;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-3;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
+
+.onboarding-page__button--ghost {
+  background-color: $color-bg-muted;
+  border: 1px solid $color-border-default;
+  color: $color-text-secondary;
+}
+
+.onboarding-page__button--primary {
+  background-color: $color-primary-500;
+  border: 1px solid $color-primary-500;
+  color: $color-text-inverse;
+
+  &:hover:not(:disabled) {
+    background-color: $color-primary-600;
+  }
+}
+
+@media (min-width: 768px) {
+  .onboarding-page {
+    margin: $space-10 auto;
+    padding: $space-6;
+    gap: $space-5;
+  }
+
+  .onboarding-card {
+    padding: $space-5;
+  }
+}
+
+@media (min-width: 1200px) {
+  .onboarding-page {
+    width: min(100%, 44rem);
+    margin: $space-12 auto;
+    padding: $space-8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-card {
+    animation: none;
+  }
+}

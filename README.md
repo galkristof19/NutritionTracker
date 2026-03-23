@@ -1,10 +1,10 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Ew36zBjj)
 # Webfejlesztési keretrendszerek — Projektmunka
 
-> **Hallgató neve:** _[Írd ide a neved]_  
-> **Neptun kód:** _[Írd ide a Neptun kódod]_  
-> **Projekt téma:** _[Írd ide a választott témát]_  
-> **Keretrendszer:** _[Írd ide a választott keretrendszert]_
+> **Hallgató neve:** _[Gál Kristof]_  
+> **Neptun kód:** _[KSWATF]_  
+> **Projekt téma:** _[Táplálkozás követő alkalmazás]_  
+> **Keretrendszer:** _[React]_
 
 ---
 

@@ -1,0 +1,132 @@
+@use '../../styles/tokens' as *;
+
+.auth-page {
+  width: min(100%, 32rem);
+  margin: $space-6 auto;
+  padding: $space-5;
+  display: grid;
+  gap: $space-4;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, #{$color-bg-surface} 94%, white 6%) 0%,
+    $color-bg-surface 100%
+  );
+  border: 1px solid $color-border-default;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+}
+
+.auth-page__title {
+  margin: 0;
+  font-family: $font-family-heading;
+  font-size: clamp(#{$font-size-xl}, 6.2vw, #{$font-size-3xl});
+  line-height: $line-height-tight;
+  color: $color-text-primary;
+}
+
+.auth-page__subtitle {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: clamp(#{$font-size-sm}, 3.7vw, #{$font-size-md});
+}
+
+.auth-form {
+  display: grid;
+  gap: $space-3;
+}
+
+.auth-form__field {
+  display: grid;
+  gap: $space-1;
+
+  label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-primary;
+  }
+
+  input {
+    width: 100%;
+    min-height: 2.75rem; // touch-friendly 44px+
+    padding: $space-2 $space-3;
+    border: 1px solid $color-border-strong;
+    border-radius: $radius-md;
+    background-color: $color-bg-surface;
+    color: $color-text-primary;
+    font-family: $font-family-base;
+    font-size: $font-size-md;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-visible {
+      outline: none;
+      border-color: $color-primary-500;
+      box-shadow: 0 0 0 3px color-mix(in srgb, #{$color-primary-500} 18%, transparent);
+    }
+  }
+}
+
+.auth-form__submit {
+  min-height: 2.75rem; // touch target
+  margin-top: $space-1;
+  border: none;
+  border-radius: $radius-md;
+  background-color: $color-primary-500;
+  color: $color-text-inverse;
+  font-family: $font-family-base;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  padding: $space-2 $space-4;
+  cursor: pointer;
+  box-shadow: $shadow-sm;
+  transition: background-color 0.2s ease, transform 0.12s ease;
+
+  &:hover {
+    background-color: $color-primary-600;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-primary-500;
+    outline-offset: 2px;
+  }
+}
+
+.error {
+  margin: 0;
+  border: 1px solid color-mix(in srgb, #{$color-danger} 45%, white);
+  border-radius: $radius-md;
+  background-color: color-mix(in srgb, #{$color-danger} 10%, white);
+  color: $color-danger;
+  font-size: $font-size-sm;
+  padding: $space-2 $space-3;
+}
+
+.auth-page__hint {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+}
+
+@media (min-width: 768px) {
+  .auth-page {
+    margin: $space-10 auto;
+    padding: $space-6;
+    gap: $space-5;
+  }
+
+  .auth-form {
+    gap: $space-4;
+  }
+}
+
+@media (min-width: 1200px) {
+  .auth-page {
+    width: min(100%, 36rem);
+    margin: $space-12 auto;
+    padding: $space-8;
+  }
+}

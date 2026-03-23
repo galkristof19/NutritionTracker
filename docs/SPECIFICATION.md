@@ -1,4 +1,4 @@
-# Receptgyűjtemény
+# LockIn
 
 **Webes alkalmazás specifikáció**
 **Programrendszerek fejlesztése gyakorlat**
@@ -9,79 +9,84 @@
 
 ## 1. Bevezetés
 
-A Receptgyűjtemény egy MEAN stack alapú webes alkalmazás, amely lehetővé teszi receptek létrehozását, böngészését és értékelését. A projekt célja a kurzus során tanult technológiák demonstrálása egy egyszerű, de teljes értékű CRUD rendszeren keresztül.
-
-A rendszer két szerepkört különböztet meg: adminisztrátor és felhasználó. Az admin előre regisztrálva van, a felhasználók pedig a regisztrációs felületen keresztül hozhatnak létre fiókot.
+A LockIn egy modern, felhasználóbarát webalkalmazás, amely a tudatos életmód támogatására jött létre. Az alkalmazás nem csupán egy egyszerű kalóriaszámláló, hanem egy komplex táplálkozási menedzser, amely segít a felhasználóknak átlátni étkezési szokásaikat, könnyebbé téve céljaik elérését egészségük érdekében. Az alkalmazást széles körű felhasználói réteg számára terveztük, különös tekintettel a életmódváltók és fogyni vágyók, sportolók és testépítők illetve speciális étrendet követők számára - mindezt egy reszponziv, akadálymentes, jól architekturált React | Node.js webalkalmazásként tervezve.
 
 ### 1.1. Technológiai stack
 
-- **MongoDB** – NoSQL adatbázis
-- **Express.js** – Szerver oldali keretrendszer
-- **Angular** – Kliens oldali keretrendszer
-- **Node.js** – Futási környezet
+- **Frontend:** React
+- **Nyelv:** Javascript
+- **Styling:** SCSS + CSS custom properties (design tokenek)
+- **Routing:** React Router
+- **Állapotkezelés:** Zustand
+- **Backend:** Node.js + Express
+- **Adatbázis:** PostgreSQL
+- **Autentikáció:** Firebase Authentication (email/jelszó)
+- **Tárhely:** Firebase Storage (képek)
+- **Hosting:** Firebase Hosting
+- **Tesztelés:** Vitest (Unit) Playwright (E2E)
+- **Build:** Vite
+- **Verziókezelés:** Git + GitHub
 
 ---
 
 ## 2. Szerepkörök
 
-### 2.1. Adminisztrátor
+**Admin:** Az adminisztrátor felel a rendszer integritásáért és a központi adatok kezeléséért.
+- Élelmiszer-adatbázis kezelése
+- Felhasználó-kezelés
+- Tartalomkezelés
 
-Az admin előre regisztrált fiókkal rendelkezik (seed adat). Jogosultságai:
-
-- Kategóriák létrehozása, módosítása és törlése
-- Receptek létrehozása, módosítása és törlése
-- Összes értékelés megtekintése és moderálása (törlés)
-
-### 2.2. Felhasználó
-
-A felhasználó a regisztrációs felületen keresztül hozhat létre fiókot. Jogosultságai:
-
-- Receptek böngészése és részleteinek megtekintése
-- Értékelés írása receptekhez
-- Saját értékeléseinek módosítása és törlése
-- Receptek szűrése kategória szerint
+**Regisztrált Felhasználó:** Ez a szerepkör az alkalmazás elsődleges célcsoportja. Az interakció a saját adatok bevitelére és a fejlődés nyomon követésére fókuszál.
+- Adatbevitel
+- Személyre szabás
+- Saját adatbázis építése (Kedvenc ételek és receptek mentése a gyorsabb rögzítéshez)
+- Vizuális visszacsatolás (pl. grafikon)
 
 ---
 
 ## 3. Funkcionális követelmények
 
-1. A felhasználó regisztrálhat az alkalmazásba felhasználónév, e-mail és jelszó megadásával.
-2. A felhasználó bejelentkezhet az e-mail és jelszó párosával, sikeres bejelentkezés után JWT tokent kap.
-3. Az admin kategóriákat hozhat létre, módosíthat és törölhet.
-4. Az admin recepteket hozhat létre hozzávalókkal együtt, módosíthatja és törölheti azokat.
-5. A bejelentkezett felhasználó értékelést írhat receptekhez (1–5 pontszám + opcionális komment).
-6. A felhasználó módosíthatja és törölheti a saját értékeléseit.
-7. Bárki (bejelentkezés nélkül is) böngészheti a recepteket és szűrhet kategória szerint.
-8. A recept részletei oldalon megjeleníthetőek a hozzávalók és az értékelések.
-9. Az adatbázis demo adatokat tartalmaz (legalább 3 kategória, 5 recept, hozzávalókkal).
+1. Regisztráció és profilalkotás: A felhasználó regisztrálhat e-maillel és jelszóval. Az első belépéskor megadhatja fizikai adatait (kor, nem, súly, magasság) és aktivitási szintjét a napi kalóriakeret meghatározásához.
+2. Hitelesítés: A felhasználó bejelentkezhet a Firebase Authentication segítségével, és hozzáférhet a védett útvonalakhoz.
+3. Élelmiszer-adatbázis kezelése: A felhasználó kereshet az alapértelmezett élelmiszerek között, és új, saját élelmiszereket (név, kalória, makrotápanyagok: fehérje, szénhidrát, zsír) rögzíthet.
+4. Napi napló (Logging): A felhasználó rögzítheti az elfogyasztott ételeket és azok mennyiségét a napi naplójában, étkezési típusok szerinti bontásban (reggeli, ebéd, vacsora, snack).
+5. Célkitűzés és haladás: A rendszer a megadott adatok alapján kiszámítja a napi ajánlott makrotápanyag-bevitelt, és vizuálisan (pl. progress bar) megjeleníti az aktuális napi egyenleget.
+6. Speciális étrend jelölők: A felhasználó beállíthat diétás preferenciákat (pl. vegán, gluténmentes, laktózmentes), a rendszer pedig szűrhetővé teszi az élelmiszereket ezek alapján.
+7. Adatmódosítás és törlés: A felhasználó szerkesztheti vagy törölheti a naplójába korábban felvitt bejegyzéseket.
+8. Adminisztrációs felület: Az admin jogosultsággal rendelkező felhasználók globális élelmiszer-kategóriákat hozhatnak létre, és moderálhatják a közösségi adatbázisba feltöltött elemeket.
 
 ---
 
 ## 4. Nem-funkcionális követelmények
 
-1. A jelszó tárolás bcrypt hash-sel történik.
-2. JWT alapú autentikáció, token lejárati idővel.
-3. Role-based hozzáférés-vezérlés middleware-rel megvalósítva.
-4. CORS konfiguráció a kliens-szerver kommunikációhoz.
-5. Hibakezelés: a szerver értelmes HTTP státuszkodokat és hibaüzeneteket ad vissza.
-6. Reszponzív felhasználói felület Angular Material komponensekkel.
+1. Biztonság: A felhasználói hitelesítés és a jelszavak kezelése a Firebase Authentication biztonságos protokolljain keresztül történik. Az adatbázis-hozzáférés biztonsági szabályokkal (Firebase/PostgreSQL policy) védett.
+2. Állapotkezelés: Az alkalmazás kliensoldali állapota (pl. aktuális napi adatok, felhasználói beállítások) a Zustand könyvtárral kerül kezelésre az optimális teljesítmény érdekében.
+3. Reszponzivitás: A felületnek SCSS és CSS custom properties használatával teljesen reszponzívnak kell lennie, kiszolgálva a mobil, tablet és desktop nézeteket is.
+4. Adatkonzisztencia: A PostgreSQL adatbázisnak biztosítania kell a relációs integritást a felhasználók, az elfogyasztott ételek és az élelmiszer-törzsadatok között.
+5. Teljesítmény: Az oldal betöltési idejének (LCP) 2 másodperc alatt kell maradnia, amelyet a Vite build-optimalizálása és a kód szétválasztása (code-splitting) segít.
+6. Karbantarthatóság: A forráskódot moduláris felépítésben, tiszta architektúra elveit követve kell tárolni a GitHubon, dokumentált komponensstruktúrával.
+7. Teszteltség: A kritikus üzleti logika (pl. kalória-számítás) unit tesztekkel (Vitest), a kritikus felhasználói folyamatok (pl. regisztráció, étel rögzítése) pedig E2E tesztekkel (Playwright) ellenőrzöttek.
+8. Akadálymentesség: A UI elemeknek meg kell felelniük az alapvető akadálymentességi (A11y) irányelveknek (megfelelő kontrasztarány, fókuszkezelés, leíró címkék).
 
 ---
 
 ## 5. Kliens oldali nézetek
 
-Az Angular alkalmazás az alábbi fő nézeteket (oldalakat) tartalmazza:
+Az React alkalmazás az alábbi fő nézeteket (oldalakat) tartalmazza:
 
 ### 5.1. Nyilvános nézetek
 
-- **Kezdőlap** – Receptek listája, kategória szűrővel
-- **Recept részletek** – Leírás, hozzávalók, értékelések
+- **Kezdőlap** – Motivacio, Feature lista, Celok
 - **Bejelentkezés** – E-mail és jelszó megadása
 - **Regisztráció** – Új fiók létrehozása
 
 ### 5.2. Bejelentkezett felhasználói nézetek
 
-- **Értékelés írása / módosítása** – Pontszám és komment űrlap
+- **Főoldal** – Az összesítő modulok gyűjtőhelye
+- **Napló és Keresés** – Részletes napi lista az elfogyasztott ételekről
+- **Fejlődés követése** – Elemzések gyűjtőoldala
+- **Beállítások** –  Beállítások központja
+
 
 ### 5.3. Admin nézetek
 
@@ -96,8 +101,8 @@ Az Angular alkalmazás az alábbi fő nézeteket (oldalakat) tartalmazza:
 A rendszer minden komponense konténerizált formában lesz üzemeltetve. A rendszer futtatásához szükséges előfeltételek:
 
 - Node.js (v24)
-- MongoDB (lokális)
-- Angular CLI (v21)
+- PostgreSQL (lokális)
+- Firebase CLI (v21)
 
 ---
 
@@ -108,7 +113,7 @@ A GitHub repository várt struktúrája:
 | Mappa / Fájl | Leírás |
 |---|---|
 | `/server` | Express.js szerver forráskód |
-| `/client` | Angular alkalmazás forráskód |
+| `/client` | React alkalmazás forráskód |
 | `/docs` | Dokumentáció (ez a specifikáció is) |
 | `/prompts` | AI prompt-ok és elemzés |
 | `README.md` | Telepítési útmutató |
