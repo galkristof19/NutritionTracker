@@ -13,7 +13,7 @@ export function LandingLayout() {
 
       <header className='landing-layout__header'>
         <Link to='/' className='landing-layout__brand'>
-          LockedIn
+          LockIn
         </Link>
 
         <nav className='landing-layout__actions' aria-label='Felhasznaloi muveletek'>
@@ -39,7 +39,7 @@ export function LandingLayout() {
       </main>
 
       <footer className='landing-layout__footer'>
-        <p>LockedIn • Tudatos etkezes, merheto fejlodes.</p>
+        <p>LockIn • Tudatos etkezes, merheto fejlodes.</p>
       </footer>
     </div>
   )

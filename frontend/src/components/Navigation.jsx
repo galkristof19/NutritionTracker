@@ -81,7 +81,7 @@ export function Navigation() {
     <nav className="nav" aria-label="Fő navigáció">
       <div className="nav__brand">
         <Link to="/" className="nav__logo">
-          LockedIn
+          LockIn
         </Link>
       </div>
 

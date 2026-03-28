@@ -52,7 +52,7 @@ export function LandingPage() {
             Merd a fejlodesed, ne csak talalgass.
           </h1>
           <p className='landing-page__subtitle'>
-            A LockedIn segit atlatni etkezesi szokasaidat, hogy tisztan lasd a
+            A LockIn segit atlatni etkezesi szokasaidat, hogy tisztan lasd a
             kaloriat, a makrokat es a napi celjaid teljesuleset.
           </p>
           <div className='landing-page__hero-actions'>
@@ -121,7 +121,7 @@ export function LandingPage() {
       <section className='landing-page__section' id='motivation' aria-labelledby='motivation-title'>
         <h2 id='motivation-title'>Motivacio</h2>
         <p>
-          Nem kell tokeletesnek lenned. Eleg, ha kovetkezetes vagy. A LockedIn
+          Nem kell tokeletesnek lenned. Eleg, ha kovetkezetes vagy. A LockIn
           segit napi szinten fenntartani a ritmust egyszeru es gyors rogzitessel.
         </p>
       </section>
