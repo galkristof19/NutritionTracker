@@ -33,7 +33,8 @@ npm start
 │   ├── DATAMODEL.md         # Adatmodell (entitások, kapcsolatok)
 │   ├── COMPONENTS.md        # Komponens-terv
 │   └── AI_PROMPT_LOG.md     # AI prompt napló
-├── src/                     # Forráskód
+├── frontend/                     # Forráskód
+├── backend/                     # Forráskód
 └── .github/workflows/       # Automatikus értékelés (ne módosítsd!)
 ```
 
