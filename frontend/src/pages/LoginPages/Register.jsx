@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
 import { useAuthStore } from '../../store/authStore'
+import { registerUser } from '../../api/authService'
 import './Auth.scss'
 
 export function RegisterPage() {
@@ -15,11 +16,17 @@ export function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [name, setName] = useState('')
   const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+
+    if (!name.trim()) {
+      setError('A nev megadasa kovetkezteteskeppen szukseges.')
+      return
+    }
 
     if (password !== confirmPassword) {
       setError('A ket jelszo nem egyezik meg.')
@@ -29,7 +36,15 @@ export function RegisterPage() {
     setLoading(true)
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      // Step 1: Register user via API (which handles both Firebase and DB)
+      const response = await registerUser({
+        email,
+        password,
+        name,
+      })
+
+      // Step 2: Sign in with the created credentials
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const createdUser = userCredential.user
 
       localStorage.removeItem(`onboarding_complete_${createdUser.uid}`)
@@ -55,6 +70,17 @@ export function RegisterPage() {
       </p>
 
       <form onSubmit={handleSubmit} className='auth-form'>
+        <div className='auth-form__field'>
+          <label htmlFor='register-name'>Nev</label>
+          <input
+            id='register-name'
+            type='text'
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
         <div className='auth-form__field'>
           <label htmlFor='register-email'>Email</label>
           <input

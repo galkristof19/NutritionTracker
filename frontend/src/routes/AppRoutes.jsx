@@ -13,6 +13,7 @@ import { FoodSearch } from '../features/FoodSearch'
 import { Statistics } from '../features/Stats'
 import { Profile } from '../features/Profile'
 import { AdminDashboard } from '../pages/AdminDashboard'
+import { NotFoundPage } from '../pages/NotFoundPage'
 
 import { useAuthStore } from '../store/authStore'
 
@@ -49,7 +50,7 @@ function AdminRoute({ children }) {
 }
 
 export default function AppRoutes() {
-  const { user, loading, onboardingComplete } = useAuthStore()
+  const { user, loading, onboardingComplete, role } = useAuthStore()
 
   if (loading) {
     return <div>Loading...</div>
@@ -58,7 +59,13 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path='/' element={<LandingLayout />}>
-        <Route index element={<LandingPage />} />
+        <Route index element={
+          user && role === 'admin' ? (
+            <Navigate to='/admin' replace />
+          ) : (
+            <LandingPage />
+          )
+        } />
         <Route
           path='login'
           element={
@@ -107,7 +114,7 @@ export default function AppRoutes() {
         <Route index element={<AdminDashboard />} />
       </Route>
 
-      <Route path='*' element={<Navigate to='/' replace />} />
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   )
 }

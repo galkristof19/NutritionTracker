@@ -29,6 +29,7 @@ environment.prod.ts
 
 # Firebase
 .firebase/
+backend/src/config/firebase-service-account.json
 
 # IDE / Editor
 .vscode/*

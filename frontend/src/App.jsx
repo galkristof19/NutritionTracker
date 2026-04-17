@@ -19,11 +19,20 @@ function App() {
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user)
-        // TODO: derive role from custom claims or DB
-        setRole('user')
+        
+        // Get role from Firebase Custom Claims (force refresh)
+        try {
+          const idTokenResult = await user.getIdTokenResult(true) // true = force refresh
+          const role = idTokenResult.claims.role || 'user'
+          console.log('User role:', role, 'Claims:', idTokenResult.claims)
+          setRole(role)
+        } catch (error) {
+          console.error('Error getting user role:', error)
+          setRole('user')
+        }
 
         const completedInBrowser = localStorage.getItem(getOnboardingKey(user.uid)) === '1'
         const onboardingComplete = completedInBrowser || !isFirstSignIn(user)
