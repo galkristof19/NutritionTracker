@@ -84,7 +84,7 @@ export const updateProfile = catchAsync(async (req, res, next) => {
 		throw new AuthError("User not authenticated");
 	}
 
-	const { name, gender, birthDate, currentWeight, height, activityLevel, dailyCalorieGoal, dietPreferences } = req.body;
+	const { name, gender, birthDate, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal } = req.body;
 
 	const updatedUser = await userRepository.updateUser(req.user.uid, {
 		name,
@@ -94,7 +94,7 @@ export const updateProfile = catchAsync(async (req, res, next) => {
 		height,
 		activityLevel,
 		dailyCalorieGoal,
-		dietPreferences,
+		weightGoal,
 	});
 
 	res.status(200).json({

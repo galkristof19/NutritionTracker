@@ -5,6 +5,8 @@ import morgan from "morgan";
 import { initializeFirebase } from "./config/firebase.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import foodRoutes from "./routes/foodRoutes.js";
+import recipeRoutes from "./routes/recipeRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -32,6 +34,8 @@ app.get("/health", (req, res) => {
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/food", foodRoutes);
+app.use("/api/recipes", recipeRoutes);
 
 // API Routes placeholder (add routes as needed)
 app.use("/api", (req, res) => {

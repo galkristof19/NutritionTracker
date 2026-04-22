@@ -13,16 +13,16 @@ export const createUser = async (userData) => {
 		height = null,
 		activityLevel = 1.5,
 		dailyCalorieGoal = null,
-		dietPreferences = "none",
+		weightGoal = null,
 		role = "user",
 	} = userData;
 
 	try {
 		const result = await query(
 			`INSERT INTO users 
-			(uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, dietPreferences, role)
+			(uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role)
 			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-			RETURNING uid, email, name, birthDate, gender, role, createdAt`,
+			RETURNING uid, email, name, birthDate, gender, currentWeight, height, role, createdAt, updatedAt`,
 			[
 				uid,
 				email,
@@ -33,7 +33,7 @@ export const createUser = async (userData) => {
 				height,
 				activityLevel,
 				dailyCalorieGoal,
-				dietPreferences,
+				weightGoal,
 				role,
 			]
 		);
@@ -51,7 +51,7 @@ export const createUser = async (userData) => {
 // Get user by UID
 export const getUserByUid = async (uid) => {
 	const result = await query(
-		"SELECT uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, dietPreferences, role, createdAt, updatedAt FROM users WHERE uid = $1",
+		"SELECT uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role, createdAt, updatedAt FROM users WHERE uid = $1",
 		[uid]
 	);
 
@@ -65,7 +65,7 @@ export const getUserByUid = async (uid) => {
 // Get user by email
 export const getUserByEmail = async (email) => {
 	const result = await query(
-		"SELECT uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, dietPreferences, role, createdAt, updatedAt FROM users WHERE email = $1",
+		"SELECT uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role, createdAt, updatedAt FROM users WHERE email = $1",
 		[email]
 	);
 
@@ -86,7 +86,7 @@ export const updateUser = async (uid, userData) => {
 		height = null,
 		activityLevel = null,
 		dailyCalorieGoal = null,
-		dietPreferences = null,
+		weightGoal = null,
 	} = userData;
 
 	const updates = [];
@@ -128,9 +128,9 @@ export const updateUser = async (uid, userData) => {
 		values.push(dailyCalorieGoal);
 		paramIndex++;
 	}
-	if (dietPreferences !== null) {
-		updates.push(`dietPreferences = $${paramIndex}`);
-		values.push(dietPreferences);
+	if (weightGoal !== null) {
+		updates.push(`weightGoal = $${paramIndex}`);
+		values.push(weightGoal);
 		paramIndex++;
 	}
 
@@ -139,7 +139,7 @@ export const updateUser = async (uid, userData) => {
 	}
 
 	const result = await query(
-		`UPDATE users SET ${updates.join(", ")} WHERE uid = $1 RETURNING uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, dietPreferences, role, updatedAt`,
+		`UPDATE users SET ${updates.join(", ")} WHERE uid = $1 RETURNING uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role, updatedAt`,
 		values
 	);
 

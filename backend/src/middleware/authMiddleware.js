@@ -28,6 +28,9 @@ export const verifyFirebaseToken = async (req, res, next) => {
 	}
 };
 
+// Alias for verifyFirebaseToken
+export const authenticate = verifyFirebaseToken;
+
 export const verifyOptionalToken = async (req, res, next) => {
 	try {
 		const authHeader = req.headers.authorization;

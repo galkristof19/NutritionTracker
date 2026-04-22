@@ -1,0 +1,859 @@
+@use 'sass:color';
+@use '../styles/tokens' as *;
+
+.food-search-container {
+  text-align: left;
+  width: 100%;
+  max-width: 1200px;
+  background-color: $color-bg-surface;
+  padding: $space-6;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+
+  .food-search-main-title {
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $space-4;
+    color: $color-text-primary;
+    font-family: $font-family-heading;
+  }
+
+  .food-search-description {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    margin-bottom: $space-8;
+    line-height: $line-height-base;
+  }
+
+  .food-search-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    margin-bottom: $space-4;
+    color: $color-text-primary;
+    font-family: $font-family-heading;
+  }
+
+  // Tabs
+  .food-search-tabs {
+    display: flex;
+    gap: $space-2;
+    margin-bottom: $space-6;
+    border-bottom: 2px solid $color-border-default;
+  }
+
+  .food-search-tab {
+    padding: $space-2 $space-4;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: $color-text-secondary;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: $font-size-md;
+    font-family: $font-family-base;
+
+    &:hover {
+      color: $color-text-primary;
+    }
+
+    &.active {
+      color: $color-primary-500;
+      border-bottom-color: $color-primary-500;
+    }
+  }
+
+  // Search Form
+  .food-search-form {
+    display: flex;
+    gap: $space-2;
+    margin-bottom: $space-8;
+  }
+
+  .food-search-input {
+    flex: 1;
+    padding: $space-3;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-family: $font-family-base;
+    color: $color-text-primary;
+    outline: none;
+
+    &:focus {
+      border-color: $color-primary-500;
+      box-shadow: 0 0 5px rgba($color-primary-500, 0.3);
+    }
+
+    &:disabled {
+      background-color: $color-bg-page;
+      cursor: not-allowed;
+    }
+  }
+
+  .food-search-button {
+    padding: $space-3 $space-5;
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    cursor: pointer;
+    font-weight: $font-weight-bold;
+    font-family: $font-family-base;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: $color-primary-600;
+    }
+
+    &:active:not(:disabled) {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+
+    &:disabled {
+      background-color: $color-border-default;
+      cursor: not-allowed;
+    }
+  }
+
+  // Status Messages
+  .food-search-error {
+    padding: $space-4;
+    background-color: $color-danger;
+    color: $color-text-inverse;
+    border-radius: $radius-md;
+    margin-bottom: $space-6;
+    font-size: $font-size-md;
+  }
+
+  .food-search-loading {
+    text-align: center;
+    padding: $space-8;
+    color: $color-text-secondary;
+    font-size: $font-size-lg;
+  }
+
+  .food-search-no-results {
+    text-align: center;
+    padding: $space-8;
+    color: $color-text-secondary;
+    font-size: $font-size-md;
+  }
+
+  .food-search-empty-recipes {
+    text-align: center;
+    padding: $space-12;
+    background-color: $color-bg-page;
+    border: 2px dashed $color-border-default;
+    border-radius: $radius-md;
+    margin-top: $space-8;
+  }
+
+  .food-search-empty-recipes-text {
+    font-size: $font-size-lg;
+    color: $color-text-secondary;
+    margin-bottom: $space-4;
+  }
+
+  .food-search-create-btn {
+    padding: $space-3 $space-6;
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: $font-family-base;
+
+    &:hover {
+      background-color: $color-primary-600;
+    }
+
+    &:active {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+  }
+
+  // Results
+  .food-search-results {
+    margin-top: $space-8;
+  }
+
+  .food-search-message {
+    padding: $space-4;
+    border-radius: $radius-md;
+    margin-bottom: $space-4;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+
+    &.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    &.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  }
+
+  .food-search-results-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin-bottom: $space-4;
+  }
+
+  .food-search-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: $space-4;
+  }
+
+  .food-search-item {
+    display: flex;
+    flex-direction: column;
+    background-color: $color-bg-page;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: $shadow-md;
+    }
+
+    .food-search-item-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .food-search-item-content {
+      flex: 1;
+      padding: $space-4;
+    }
+
+    .food-search-item-name {
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin-bottom: $space-2;
+    }
+
+    .food-search-item-brand {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      margin-bottom: $space-3;
+    }
+
+    .food-search-item-nutrition {
+      display: flex;
+      flex-direction: column;
+      gap: $space-2;
+    }
+
+    .food-search-nutrition-item {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+
+    .food-search-item-actions {
+      display: flex;
+      gap: $space-2;
+      padding: $space-4;
+      border-top: 1px solid $color-border-default;
+    }
+  }
+
+  .food-search-save-btn,
+  .food-search-add-btn {
+    flex: 1;
+    padding: $space-3 $space-4;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: $font-family-base;
+  }
+
+  .food-search-save-btn {
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+
+    &:hover {
+      background-color: $color-primary-600;
+    }
+
+    &:active {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+  }
+
+  .food-search-add-btn {
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+
+    &:hover:not(:disabled) {
+      background-color: $color-primary-600;
+    }
+
+    &:active:not(:disabled) {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+
+    &:disabled {
+      background-color: $color-border-default;
+      cursor: not-allowed;
+    }
+  }
+
+  .recipe-view-btn {
+    flex: 1;
+    padding: $space-3 $space-4;
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: $font-family-base;
+
+    &:hover {
+      background-color: $color-primary-600;
+    }
+
+    &:active {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+  }
+
+  .recipe-item {
+    .recipe-description {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      margin-bottom: $space-3;
+      line-height: $line-height-base;
+    }
+
+    .recipe-details {
+      display: flex;
+      flex-direction: column;
+      gap: $space-2;
+    }
+
+    .recipe-detail {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+  }
+
+  // Recipe Modal
+  .recipe-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .recipe-modal {
+    background-color: $color-bg-surface;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .recipe-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-6;
+    border-bottom: 1px solid $color-border-default;
+
+    h2 {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: 0;
+    }
+  }
+
+  .recipe-modal-close {
+    background: none;
+    border: none;
+    font-size: $font-size-xl;
+    color: $color-text-secondary;
+    cursor: pointer;
+    padding: 0;
+    width: $space-8;
+    height: $space-8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: $color-text-primary;
+    }
+  }
+
+  .recipe-modal-content {
+    padding: $space-6;
+  }
+
+  .recipe-modal-description {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    margin-bottom: $space-6;
+  }
+
+  .recipe-name-form {
+    margin-bottom: $space-6;
+  }
+
+  .recipe-name-label {
+    display: block;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $space-2;
+  }
+
+  .recipe-name-input {
+    width: 100%;
+    padding: $space-3;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-family: $font-family-base;
+    color: $color-text-primary;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: $color-primary-500;
+      box-shadow: 0 0 5px rgba($color-primary-500, 0.3);
+    }
+
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+  }
+
+  .recipe-modal-search-form {
+    display: flex;
+    gap: $space-2;
+    margin-bottom: $space-6;
+  }
+
+  .recipe-modal-search-input {
+    flex: 1;
+    padding: $space-3;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-family: $font-family-base;
+    color: $color-text-primary;
+    outline: none;
+
+    &:focus {
+      border-color: $color-primary-500;
+      box-shadow: 0 0 5px rgba($color-primary-500, 0.3);
+    }
+  }
+
+  .recipe-modal-search-btn {
+    padding: $space-3 $space-5;
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    cursor: pointer;
+    font-weight: $font-weight-bold;
+    font-family: $font-family-base;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: $color-primary-600;
+    }
+
+    &:disabled {
+      background-color: $color-border-default;
+      cursor: not-allowed;
+    }
+  }
+
+  .recipe-modal-error {
+    padding: $space-4;
+    background-color: $color-danger;
+    color: $color-text-inverse;
+    border-radius: $radius-md;
+    margin-bottom: $space-6;
+    font-size: $font-size-md;
+  }
+
+  .recipe-modal-loading {
+    text-align: center;
+    padding: $space-8;
+    color: $color-text-secondary;
+    font-size: $font-size-lg;
+  }
+
+  .recipe-modal-no-results {
+    text-align: center;
+    padding: $space-8;
+    color: $color-text-secondary;
+    font-size: $font-size-md;
+  }
+
+  .recipe-modal-results {
+    margin-top: $space-6;
+  }
+
+  .recipe-modal-results-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin-bottom: $space-4;
+  }
+
+  .recipe-modal-items {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+
+  .recipe-modal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-4;
+    background-color: $color-bg-page;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+
+    &:hover {
+      box-shadow: $shadow-md;
+    }
+  }
+
+  .recipe-modal-item-content {
+    flex: 1;
+  }
+
+  .recipe-modal-item-name {
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin: 0 0 $space-2 0;
+  }
+
+  .recipe-modal-item-brand {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin: 0 0 $space-2 0;
+  }
+
+  .recipe-modal-item-nutrition {
+    display: flex;
+    gap: $space-3;
+    flex-wrap: wrap;
+
+    span {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+  }
+
+  .recipe-modal-item-add-btn {
+    padding: $space-2 $space-4;
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: $font-family-base;
+    white-space: nowrap;
+    margin-left: $space-3;
+
+    &:hover {
+      background-color: $color-primary-600;
+    }
+
+    &:active {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+  }
+
+  // Selected Ingredients
+  .recipe-modal-selected {
+    margin-top: $space-8;
+    padding-top: $space-6;
+    border-top: 1px solid $color-border-default;
+  }
+
+  .recipe-modal-selected-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin-bottom: $space-4;
+  }
+
+  .recipe-modal-selected-items {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    margin-bottom: $space-6;
+  }
+
+  .recipe-modal-selected-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-3;
+    background-color: $color-bg-page;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+  }
+
+  .recipe-modal-selected-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+  }
+
+  .recipe-modal-selected-item-name {
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin: 0;
+  }
+
+  .recipe-modal-selected-item-cals {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+
+  .recipe-modal-selected-item-remove {
+    background: none;
+    border: none;
+    font-size: $font-size-lg;
+    color: $color-text-secondary;
+    cursor: pointer;
+    padding: $space-2;
+    width: $space-8;
+    height: $space-8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: $color-danger;
+    }
+  }
+
+  // Nutrition Totals
+  .recipe-modal-nutrition-totals {
+    padding: $space-4;
+    background-color: $color-bg-page;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    margin-bottom: $space-6;
+
+    h4 {
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: 0 0 $space-3 0;
+    }
+  }
+
+  .recipe-modal-nutrition-totals-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-2;
+
+    span {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+  }
+
+  .recipe-modal-save-btn {
+    width: 100%;
+    padding: $space-4;
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: $font-family-base;
+
+    &:hover {
+      background-color: $color-primary-600;
+    }
+
+    &:active {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+  }
+
+  // Modal
+  .food-search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .food-search-modal-content {
+    background-color: $color-bg-surface;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-lg;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .food-search-modal-close {
+    position: absolute;
+    top: $space-4;
+    right: $space-4;
+    background: none;
+    border: none;
+    font-size: $font-size-xl;
+    cursor: pointer;
+    color: $color-text-secondary;
+    z-index: 10;
+
+    &:hover {
+      color: $color-text-primary;
+    }
+  }
+
+  .food-search-modal-title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    padding: $space-6 $space-6 $space-4;
+    margin-bottom: 0;
+  }
+
+  .food-search-modal-body {
+    padding: $space-4 $space-6;
+  }
+
+  .food-search-form-group {
+    margin-bottom: $space-4;
+
+    label {
+      display: block;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      margin-bottom: $space-2;
+      font-size: $font-size-sm;
+    }
+  }
+
+  .food-search-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-4;
+  }
+
+  .food-search-input-readonly {
+    width: 100%;
+    padding: $space-3;
+    border: 1px solid $color-border-default;
+    border-radius: $radius-md;
+    background-color: $color-bg-page;
+    color: $color-text-primary;
+    font-family: $font-family-base;
+    font-size: $font-size-md;
+  }
+
+  .food-search-modal-actions {
+    display: flex;
+    gap: $space-4;
+    padding: $space-4 $space-6 $space-6;
+    border-top: 1px solid $color-border-default;
+  }
+
+  .food-search-cancel-btn,
+  .food-search-confirm-btn {
+    flex: 1;
+    padding: $space-3;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: $font-family-base;
+  }
+
+  .food-search-cancel-btn {
+    background-color: $color-border-default;
+    color: $color-text-primary;
+
+    &:hover {
+      background-color: $color-bg-page;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  .food-search-confirm-btn {
+    background-color: $color-primary-500;
+    color: $color-text-inverse;
+
+    &:hover:not(:disabled) {
+      background-color: $color-primary-600;
+    }
+
+    &:active:not(:disabled) {
+      background-color: color.adjust($color-primary-600, $lightness: -10%);
+    }
+
+    &:disabled {
+      background-color: $color-border-default;
+      cursor: not-allowed;
+    }
+  }
+}
+

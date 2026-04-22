@@ -77,6 +77,131 @@
   }
 }
 
+// Select input styling
+select.onboarding-card__input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%230f766e' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-3 center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+
+  &::-ms-expand {
+    display: none;
+  }
+}
+
+// Date input styling
+input[type='date'].onboarding-card__input {
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    color: $color-primary-500;
+  }
+}
+
+// Range slider styling
+.onboarding-card__range-container {
+  display: flex;
+  gap: $space-3;
+  align-items: center;
+  padding: $space-2 0;
+}
+
+.onboarding-card__range {
+  flex: 1;
+  height: 6px;
+  border-radius: $radius-pill;
+  background: linear-gradient(
+    to right,
+    $color-primary-500 0%,
+    $color-primary-500 50%,
+    $color-border-default 50%,
+    $color-border-default 100%
+  );
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: $radius-pill;
+    background-color: $color-primary-500;
+    border: 2px solid $color-bg-surface;
+    cursor: pointer;
+    box-shadow: $shadow-md;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: $color-primary-600;
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: $radius-pill;
+    background-color: $color-primary-500;
+    border: 2px solid $color-bg-surface;
+    cursor: pointer;
+    box-shadow: $shadow-md;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: $color-primary-600;
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &::-moz-range-track {
+    background: transparent;
+    border: none;
+  }
+}
+
+.onboarding-card__range-value {
+  min-width: 2.5rem;
+  font-weight: $font-weight-semibold;
+  color: $color-primary-500;
+  text-align: center;
+  font-size: $font-size-lg;
+}
+
+// Error state styling
+.onboarding-card__error {
+  margin: 0;
+  padding: $space-2 $space-3;
+  background-color: color-mix(in srgb, #{$color-danger} 12%, transparent);
+  border: 1px solid $color-danger;
+  border-radius: $radius-md;
+  color: $color-danger;
+  font-size: $font-size-sm;
+  animation: error-shake 0.3s ease-in-out;
+}
+
+@keyframes error-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
 .onboarding-page__actions {
   display: flex;
   justify-content: space-between;

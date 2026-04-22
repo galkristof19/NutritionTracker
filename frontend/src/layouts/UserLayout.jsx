@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { Navigation } from '../components/Navigation'
+import './UserLayout.scss'
 
 export function UserLayout() {
   return (

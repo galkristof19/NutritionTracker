@@ -30,3 +30,65 @@ export const deleteUserAccount = async () => {
     method: 'DELETE',
   });
 };
+
+// Search foods from external API (Open Food Facts)
+export const searchExternalFoods = async (query, page = 1) => {
+  const params = new URLSearchParams({ q: query, page: page });
+  return apiRequest(`${getApiUrl(API_ENDPOINTS.FOOD.SEARCH_EXTERNAL)}?${params.toString()}`, {
+    method: 'GET',
+  });
+};
+
+// Search foods from local database
+export const searchLocalFoods = async (query, limit = 20, offset = 0) => {
+  const params = new URLSearchParams({ q: query, limit: limit, offset: offset });
+  return apiRequest(`${getApiUrl(API_ENDPOINTS.FOOD.SEARCH_LOCAL)}?${params.toString()}`, {
+    method: 'GET',
+  });
+};
+
+// Get all public foods
+export const getPublicFoods = async (limit = 100, offset = 0) => {
+  const params = new URLSearchParams({ limit: limit, offset: offset });
+  return apiRequest(`${getApiUrl(API_ENDPOINTS.FOOD.GET_PUBLIC)}?${params.toString()}`, {
+    method: 'GET',
+  });
+};
+
+// Get single food by ID
+export const getFoodById = async (id) => {
+  return apiRequest(getApiUrl(API_ENDPOINTS.FOOD.GET_BY_ID.replace(':id', id)), {
+    method: 'GET',
+  });
+};
+
+// Save a food item to database
+export const saveFood = async (foodData) => {
+  return apiRequest(getApiUrl(API_ENDPOINTS.FOOD.SAVE), {
+    method: 'POST',
+    body: JSON.stringify(foodData),
+  });
+};
+
+// Get current user's saved foods
+export const getUserFoods = async (limit = 100, offset = 0) => {
+  const params = new URLSearchParams({ limit: limit, offset: offset });
+  return apiRequest(`${getApiUrl(API_ENDPOINTS.FOOD.GET_USER_FOODS)}?${params.toString()}`, {
+    method: 'GET',
+  });
+};
+
+// Update a food item
+export const updateFood = async (id, foodData) => {
+  return apiRequest(getApiUrl(API_ENDPOINTS.FOOD.UPDATE.replace(':id', id)), {
+    method: 'PUT',
+    body: JSON.stringify(foodData),
+  });
+};
+
+// Delete a food item
+export const deleteFood = async (id) => {
+  return apiRequest(getApiUrl(API_ENDPOINTS.FOOD.DELETE.replace(':id', id)), {
+    method: 'DELETE',
+  });
+};

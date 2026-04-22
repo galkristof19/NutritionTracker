@@ -9,14 +9,10 @@ function App() {
   const setRole = useAuthStore((state) => state.setRole)
   const setLoading = useAuthStore((state) => state.setLoading)
   const setOnboardingComplete = useAuthStore((state) => state.setOnboardingComplete)
+  const setIsInitialized = useAuthStore((state) => state.setIsInitialized)
+  const isInitialized = useAuthStore((state) => state.isInitialized)
 
   const getOnboardingKey = (uid) => `onboarding_complete_${uid}`
-
-  const isFirstSignIn = (user) => {
-    const creationTime = user?.metadata?.creationTime
-    const lastSignInTime = user?.metadata?.lastSignInTime
-    return Boolean(creationTime && lastSignInTime && creationTime === lastSignInTime)
-  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -34,19 +30,24 @@ function App() {
           setRole('user')
         }
 
+        // Only consider onboarding complete if explicitly marked in localStorage
         const completedInBrowser = localStorage.getItem(getOnboardingKey(user.uid)) === '1'
-        const onboardingComplete = completedInBrowser || !isFirstSignIn(user)
-        setOnboardingComplete(onboardingComplete)
+        setOnboardingComplete(completedInBrowser)
       } else {
         setUser(null)
         setRole('user')
         setOnboardingComplete(false)
       }
       setLoading(false)
+      setIsInitialized(true)
     })
 
     return () => unsubscribe()
-  }, [setUser, setRole, setLoading, setOnboardingComplete])
+  }, [setUser, setRole, setLoading, setOnboardingComplete, setIsInitialized])
+
+  if (!isInitialized) {
+    return <div>Loading...</div>
+  }
 
   return <AppRoutes />
 }
