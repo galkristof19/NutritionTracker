@@ -1,0 +1,218 @@
+@use '../styles/tokens' as *;
+
+.user-dashboard {
+  display: grid;
+  gap: $space-6;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.user-dashboard__hero {
+  padding: $space-6;
+  border-radius: $radius-xl;
+  border: 1px solid $color-border-default;
+  background:
+    radial-gradient(circle at 94% 12%, rgba($color-secondary-500, 0.2), transparent 42%),
+    radial-gradient(circle at 8% 88%, rgba($color-accent-500, 0.16), transparent 45%),
+    linear-gradient(125deg, #ffffff, #f7fbff);
+  box-shadow: $shadow-sm;
+}
+
+.user-dashboard__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: $font-size-xs;
+  color: $color-primary-500;
+  font-weight: $font-weight-semibold;
+}
+
+.user-dashboard__title {
+  margin: $space-2 0 $space-3;
+  font-size: clamp(1.5rem, 3vw, 2.3rem);
+  line-height: $line-height-tight;
+  font-family: $font-family-heading;
+}
+
+.user-dashboard__lead {
+  margin: 0;
+  max-width: 72ch;
+  color: $color-text-secondary;
+}
+
+.user-dashboard__daily-card {
+  display: grid;
+}
+
+.user-dashboard__calorie-card {
+  padding: $space-5;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background:
+    radial-gradient(circle at 100% 0%, rgba($color-secondary-500, 0.2), transparent 45%),
+    linear-gradient(140deg, #fffef8, #ffffff);
+  box-shadow: $shadow-xs;
+}
+
+.user-dashboard__calorie-eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: $font-size-xs;
+  color: $color-primary-600;
+  font-weight: $font-weight-semibold;
+}
+
+.user-dashboard__calorie-title {
+  margin: $space-2 0;
+  font-size: $font-size-xl;
+  font-family: $font-family-heading;
+}
+
+.user-dashboard__calorie-summary {
+  margin: 0 0 $space-4;
+  color: $color-text-secondary;
+
+  strong {
+    color: $color-text-primary;
+  }
+}
+
+.user-dashboard__calorie-track {
+  width: 100%;
+  height: 12px;
+  border-radius: $radius-pill;
+  overflow: hidden;
+  background: #ebf0f8;
+}
+
+.user-dashboard__calorie-fill {
+  height: 100%;
+  border-radius: $radius-pill;
+  background: linear-gradient(90deg, $color-primary-500, $color-accent-500);
+}
+
+.user-dashboard__calorie-metrics {
+  margin-top: $space-3;
+  display: flex;
+  justify-content: space-between;
+  gap: $space-3;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+}
+
+.user-dashboard__main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $space-4;
+}
+
+.user-dashboard__panel {
+  padding: $space-5;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: $color-bg-surface;
+  box-shadow: $shadow-xs;
+}
+
+.user-dashboard__panel-title {
+  margin: 0 0 $space-2;
+  font-size: $font-size-lg;
+  font-family: $font-family-heading;
+}
+
+.user-dashboard__panel-text {
+  margin: 0 0 $space-4;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+}
+
+.user-dashboard__actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: $space-3;
+}
+
+.user-dashboard__action-btn {
+  text-decoration: none;
+  border-radius: $radius-md;
+  border: 1px solid $color-border-default;
+  padding: $space-3 $space-4;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  background: #f8fbff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: $shadow-sm;
+    border-color: $color-primary-500;
+    color: $color-primary-500;
+  }
+}
+
+.user-dashboard__sparkline {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: $space-2;
+  align-items: end;
+  height: 140px;
+}
+
+.user-dashboard__sparkline-item {
+  height: 100%;
+  display: flex;
+  align-items: end;
+}
+
+.user-dashboard__sparkline-bar {
+  width: 100%;
+  border-radius: $radius-sm;
+  background: linear-gradient(180deg, $color-primary-500, $color-primary-600);
+}
+
+.user-dashboard__focus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $space-4;
+}
+
+.user-dashboard__focus-card {
+  padding: $space-5;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-lg;
+  background: linear-gradient(160deg, #ffffff, #f8fbff);
+}
+
+.user-dashboard__focus-tag {
+  margin: 0 0 $space-2;
+  display: inline-block;
+  padding: $space-1 $space-3;
+  border-radius: $radius-pill;
+  background: $color-primary-100;
+  color: $color-primary-600;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.user-dashboard__focus-title {
+  margin: 0 0 $space-2;
+  font-size: $font-size-md;
+}
+
+.user-dashboard__focus-text {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+}
+
+@media (max-width: 640px) {
+  .user-dashboard__hero,
+  .user-dashboard__calorie-card,
+  .user-dashboard__panel,
+  .user-dashboard__focus-card {
+    padding: $space-4;
+  }
+}

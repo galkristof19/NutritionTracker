@@ -28,6 +28,7 @@ export const apiRequest = async (url, options = {}) => {
     const response = await fetch(url, {
       ...options,
       headers,
+      cache: token ? 'no-store' : options.cache,
     });
 
     const data = await response.json();

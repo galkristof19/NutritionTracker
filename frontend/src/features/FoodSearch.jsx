@@ -222,20 +222,39 @@ export function FoodSearch() {
     }
   }
 
+  const activeTabLabel = activeTab === 'external' ? 'Külső adatbázis' : 'Saját receptek'
+
 
   return (
-    <div className="food-search-container">
-      <h1 className="food-search-main-title">Élelmiszer Adatbázis</h1>
+    <section className="food-search-page">
+      <header className="food-search-hero">
+        <p className="food-search-hero__eyebrow">Élelmiszer és receptközpont</p>
+        <h1 className="food-search-main-title">Food Search</h1>
+        <p className="food-search-description">
+          Keress külső adatbázisban vagy böngészd a saját receptjeidet egy egységes,
+          gyors felületen. A részletes tápértékek segítenek tudatosabban dönteni,
+          a mentési és receptépítési lehetőség pedig egyszerűsíti a napi tervezést.
+        </p>
+      </header>
 
-      <p className="food-search-description">
-        Fedezd fel a különféle élelmiszereket és azok tápértékeit. Keress rá
-        élelmiszerekre, hogy részletes információkat kapj az összetevőkről és
-        kalóriatartalomról.
-      </p>
+      <div className="food-search-overview">
+        <article className="food-search-overview-card">
+          <p className="food-search-overview-card__label">Aktív nézet</p>
+          <p className="food-search-overview-card__value">{activeTabLabel}</p>
+        </article>
+        <article className="food-search-overview-card">
+          <p className="food-search-overview-card__label">Találatok</p>
+          <p className="food-search-overview-card__value">{results.length} db</p>
+        </article>
+        <article className="food-search-overview-card">
+          <p className="food-search-overview-card__label">Recept hozzávalók</p>
+          <p className="food-search-overview-card__value">{selectedIngredients.length} db</p>
+        </article>
+      </div>
 
-      <h2 className="food-search-title">Keresés</h2>
+      <div className="food-search-container">
+        <h2 className="food-search-title">Keresés</h2>
 
-      {/* Tab Navigation */}
       <div className="food-search-tabs">
         <button
           className={`food-search-tab ${activeTab === 'external' ? 'active' : ''}`}
@@ -251,7 +270,6 @@ export function FoodSearch() {
         </button>
       </div>
 
-      {/* Search Form - mindkét tab-nál */}
       <form onSubmit={handleSearch} className="food-search-form">
         <input
           type="text"
@@ -265,13 +283,10 @@ export function FoodSearch() {
         </button>
       </form>
 
-      {/* Error Message */}
       {error && <div className="food-search-error">{error}</div>}
 
-      {/* Loading State */}
       {loading && <div className="food-search-loading">Keresés folyamatban...</div>}
 
-      {/* Results */}
       {!loading && results.length > 0 && (
         <div className="food-search-results">
           <h3 className="food-search-results-title">
@@ -284,9 +299,7 @@ export function FoodSearch() {
           )}
           <div className="food-search-items">
             {results.map((item, index) => (
-              // Étel vagy recept alapján más megjelenítés
               activeTab === 'external' ? (
-                // ÉTEL MEGJELENÍTÉS (Külső adatbázis)
                 <div key={index} className="food-search-item">
                   <div className="food-search-item-content">
                     <h4 className="food-search-item-name">{item.name}</h4>
@@ -325,7 +338,6 @@ export function FoodSearch() {
                   </div>
                 </div>
               ) : (
-                // RECEPT MEGJELENÍTÉS (Saját ételek)
                 <div key={index} className="food-search-item recipe-item">
                   <div className="food-search-item-content">
                     <h4 className="food-search-item-name">{item.name}</h4>
@@ -362,12 +374,10 @@ export function FoodSearch() {
         </div>
       )}
 
-      {/* No Results */}
       {!loading && activeTab === 'external' && searchQuery && results.length === 0 && !error && (
         <div className="food-search-no-results">Nincs találat a keresésre</div>
       )}
 
-      {/* Empty User Recipes */}
       {!loading && activeTab === 'local' && results.length === 0 && !error && (
         <div className="food-search-empty-recipes">
           <p className="food-search-empty-recipes-text">Még nincs saját recepted</p>
@@ -377,7 +387,6 @@ export function FoodSearch() {
         </div>
       )}
 
-      {/* Create Recipe Modal */}
       {showCreateRecipeModal && (
         <div className="recipe-modal-overlay">
           <div className="recipe-modal" onClick={(e) => e.stopPropagation()}>
@@ -387,7 +396,6 @@ export function FoodSearch() {
             </div>
 
             <div className="recipe-modal-content">
-              {/* Recipe Name Form */}
               <div className="recipe-name-form">
                 <label htmlFor="recipe-name" className="recipe-name-label">Recept neve</label>
                 <input
@@ -402,7 +410,6 @@ export function FoodSearch() {
 
               <p className="recipe-modal-description">Keress élelmiszerekre, hogy hozzáadhasd őket a receptedhez</p>
 
-              {/* Search Form */}
               <form onSubmit={handleModalSearch} className="recipe-modal-search-form">
                 <input
                   type="text"
@@ -416,13 +423,10 @@ export function FoodSearch() {
                 </button>
               </form>
 
-              {/* Error Message */}
               {recipeModalError && <div className="recipe-modal-error">{recipeModalError}</div>}
 
-              {/* Loading State */}
               {recipeModalLoading && <div className="recipe-modal-loading">Keresés folyamatban...</div>}
 
-              {/* Results */}
               {!recipeModalLoading && recipeModalResults.length > 0 && (
                 <div className="recipe-modal-results">
                   <h3 className="recipe-modal-results-title">Keresési Eredmények ({recipeModalResults.length} db)</h3>
@@ -452,12 +456,10 @@ export function FoodSearch() {
                 </div>
               )}
 
-              {/* No Results */}
               {!recipeModalLoading && recipeModalSearchQuery && recipeModalResults.length === 0 && !recipeModalError && (
                 <div className="recipe-modal-no-results">Nincs találat a keresésre</div>
               )}
 
-              {/* Selected Ingredients */}
               {selectedIngredients.length > 0 && (
                 <div className="recipe-modal-selected">
                   <h3 className="recipe-modal-selected-title">Kiválasztott Ételek ({selectedIngredients.length} db)</h3>
@@ -481,7 +483,6 @@ export function FoodSearch() {
                     ))}
                   </div>
 
-                  {/* Nutrition Totals */}
                   {selectedIngredients.length > 0 && (() => {
                     const totals = calculateNutritionTotals(selectedIngredients)
                     return (
@@ -497,7 +498,6 @@ export function FoodSearch() {
                     )
                   })()}
 
-                  {/* Save Recipe Button */}
                   <button className="recipe-modal-save-btn" onClick={handleSaveRecipe}>
                     💾 Recept Mentése
                   </button>
@@ -508,8 +508,8 @@ export function FoodSearch() {
         </div>
       )}
 
-
-    </div>
+      </div>
+    </section>
   )
 }
 

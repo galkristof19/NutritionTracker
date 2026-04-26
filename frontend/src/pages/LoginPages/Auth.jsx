@@ -9,17 +9,17 @@ export function AuthPage() {
   const navigate = useNavigate()
   const setUser = useAuthStore((state) => state.setUser)
   const setRole = useAuthStore((state) => state.setRole)
-  const setLoading = useAuthStore((state) => state.setLoading)
   const setOnboardingComplete = useAuthStore((state) => state.setOnboardingComplete)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    setLoading(true)
+    setIsSubmitting(true)
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
@@ -37,12 +37,12 @@ export function AuthPage() {
       setUser(signedInUser)
       setRole('user') // TODO: read role from Firestore / custom claims
       setOnboardingComplete(!shouldGoToOnboarding)
-      setLoading(false)
       navigate(shouldGoToOnboarding ? '/onboarding' : '/user/dashboard', { replace: true })
     } catch (err) {
       console.error('Login error', err)
       setError(err.message || 'Bejelentkezés sikertelen')
-      setLoading(false)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -77,7 +77,9 @@ export function AuthPage() {
         </div>
 
         {error && <p className='error'>{error}</p>}
-        <button type='submit' className='auth-form__submit'>Sign in</button>
+        <button type='submit' className='auth-form__submit' disabled={isSubmitting}>
+          {isSubmitting ? 'Bejelentkezes...' : 'Sign in'}
+        </button>
       </form>
 
       <p className='auth-page__hint'>

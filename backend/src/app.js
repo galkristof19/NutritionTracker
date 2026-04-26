@@ -7,14 +7,23 @@ import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import foodRoutes from "./routes/foodRoutes.js";
 import recipeRoutes from "./routes/recipeRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
+
+app.disable("etag");
 
 // Middleware
 app.use(helmet()); // Security headers
 app.use(cors()); // CORS support
 app.use(morgan("dev")); // HTTP request logger
+app.use((req, res, next) => {
+	res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+	res.setHeader("Pragma", "no-cache");
+	res.setHeader("Expires", "0");
+	next();
+});
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
@@ -36,6 +45,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/food", foodRoutes);
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/profile", profileRoutes);
 
 // API Routes placeholder (add routes as needed)
 app.use("/api", (req, res) => {

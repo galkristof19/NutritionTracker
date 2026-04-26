@@ -1,6 +1,22 @@
 import { query } from "../config/db.js";
 import { NotFoundError, ConflictError } from "../middleware/errorMiddleware.js";
 
+const USER_SELECT_FIELDS = `
+	uid,
+	email,
+	name,
+	birthDate AS "birthDate",
+	gender,
+	currentWeight AS "currentWeight",
+	height,
+	activityLevel AS "activityLevel",
+	dailyCalorieGoal AS "dailyCalorieGoal",
+	weightGoal AS "weightGoal",
+	role,
+	createdAt AS "createdAt",
+	updatedAt AS "updatedAt"
+`;
+
 // Create a new user
 export const createUser = async (userData) => {
 	const {
@@ -22,7 +38,7 @@ export const createUser = async (userData) => {
 			`INSERT INTO users 
 			(uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role)
 			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-			RETURNING uid, email, name, birthDate, gender, currentWeight, height, role, createdAt, updatedAt`,
+			RETURNING ${USER_SELECT_FIELDS}`,
 			[
 				uid,
 				email,
@@ -51,7 +67,7 @@ export const createUser = async (userData) => {
 // Get user by UID
 export const getUserByUid = async (uid) => {
 	const result = await query(
-		"SELECT uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role, createdAt, updatedAt FROM users WHERE uid = $1",
+		`SELECT ${USER_SELECT_FIELDS} FROM users WHERE uid = $1`,
 		[uid]
 	);
 
@@ -65,7 +81,7 @@ export const getUserByUid = async (uid) => {
 // Get user by email
 export const getUserByEmail = async (email) => {
 	const result = await query(
-		"SELECT uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role, createdAt, updatedAt FROM users WHERE email = $1",
+		`SELECT ${USER_SELECT_FIELDS} FROM users WHERE email = $1`,
 		[email]
 	);
 
@@ -139,7 +155,7 @@ export const updateUser = async (uid, userData) => {
 	}
 
 	const result = await query(
-		`UPDATE users SET ${updates.join(", ")} WHERE uid = $1 RETURNING uid, email, name, birthDate, gender, currentWeight, height, activityLevel, dailyCalorieGoal, weightGoal, role, updatedAt`,
+		`UPDATE users SET ${updates.join(", ")} WHERE uid = $1 RETURNING ${USER_SELECT_FIELDS}`,
 		values
 	);
 

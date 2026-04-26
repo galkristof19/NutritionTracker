@@ -11,14 +11,14 @@ export const registerUser = async (userData) => {
 
 // Get current user profile
 export const getCurrentUser = async () => {
-  return apiRequest(getApiUrl(API_ENDPOINTS.AUTH.GET_CURRENT_USER), {
+  return apiRequest(getApiUrl('/profile'), {
     method: 'GET',
   });
 };
 
 // Update user profile
 export const updateUserProfile = async (userData) => {
-  return apiRequest(getApiUrl(API_ENDPOINTS.AUTH.UPDATE_PROFILE), {
+  return apiRequest(getApiUrl('/profile'), {
     method: 'PUT',
     body: JSON.stringify(userData),
   });
