@@ -3,11 +3,16 @@ import {
   searchExternalFoods,
   searchLocalFoods,
   saveFood,
+  getUserFoods,
+  updateFood,
+  deleteFood,
 } from '../api/authService'
 import {
   getUserRecipes,
   searchRecipes,
   createRecipe,
+  updateRecipe,
+  deleteRecipe,
 } from '../api/recipeService'
 import './FoodSearch.scss'
 
@@ -26,6 +31,10 @@ export function FoodSearch() {
   const [recipeModalLoading, setRecipeModalLoading] = useState(false)
   const [recipeModalError, setRecipeModalError] = useState(null)
   const [selectedIngredients, setSelectedIngredients] = useState([])
+  const [editingItem, setEditingItem] = useState(null)
+  const [editFormData, setEditFormData] = useState({})
+  const [deleteTarget, setDeleteTarget] = useState(null)
+  const [isMutating, setIsMutating] = useState(false)
 
   // Load user's foods when switching to "local" tab
   useEffect(() => {
@@ -39,6 +48,18 @@ export function FoodSearch() {
     }
   }, [activeTab])
 
+  const normalizeFood = (food) => ({
+    ...food,
+    itemType: 'food',
+    entityId: food.id || food._id,
+  })
+
+  const normalizeRecipe = (recipe) => ({
+    ...recipe,
+    itemType: 'recipe',
+    entityId: recipe.id || recipe._id,
+  })
+
   const loadUserFoods = async () => {
     setLoading(true)
     setError(null)
@@ -46,16 +67,22 @@ export function FoodSearch() {
     setSearchQuery('')
 
     try {
-      const data = await getUserRecipes(100, 0)
-      
-      if (data.success) {
-        setResults(data.results || [])
+      const [foodsData, recipesData] = await Promise.all([
+        getUserFoods(100, 0),
+        getUserRecipes(100, 0),
+      ])
+
+      const foods = foodsData?.success ? (foodsData.results || []).map(normalizeFood) : []
+      const recipes = recipesData?.success ? (recipesData.results || []).map(normalizeRecipe) : []
+
+      if (!foodsData?.success && !recipesData?.success) {
+        setError('Hiba a saját elemek betöltésekor')
       } else {
-        setError(data.message || 'Hiba a receptek betöltésekor')
+        setResults([...foods, ...recipes])
       }
     } catch (err) {
-      console.error('Load user recipes error:', err)
-      setError('Hiba a receptek betöltésekor')
+      console.error('Load user items error:', err)
+      setError('Hiba a saját elemek betöltésekor')
     } finally {
       setLoading(false)
     }
@@ -78,8 +105,18 @@ export function FoodSearch() {
       if (activeTab === 'external') {
         data = await searchExternalFoods(searchQuery, 1)
       } else {
-        // Saját ételek - receptek keresése
-        data = await searchRecipes(searchQuery)
+        const [foodSearchData, recipeSearchData] = await Promise.all([
+          searchLocalFoods(searchQuery, 100, 0),
+          searchRecipes(searchQuery, 100, 0),
+        ])
+
+        const foods = foodSearchData?.success ? (foodSearchData.results || []).map(normalizeFood) : []
+        const recipes = recipeSearchData?.success ? (recipeSearchData.results || []).map(normalizeRecipe) : []
+
+        data = {
+          success: foodSearchData?.success || recipeSearchData?.success,
+          results: [...foods, ...recipes],
+        }
       }
 
       if (data.success) {
@@ -164,6 +201,11 @@ export function FoodSearch() {
   }
 
   const handleAddIngredient = (food, index) => {
+    const shouldAdd = window.confirm(`Biztosan hozzáadod ezt az ételt a recepthez?\n\n${food.name}`)
+    if (!shouldAdd) {
+      return
+    }
+
     setSelectedIngredients([...selectedIngredients, food])
   }
 
@@ -219,6 +261,124 @@ export function FoodSearch() {
     } catch (err) {
       console.error('Save recipe error:', err)
       alert('Hiba a recept mentésekor')
+    }
+  }
+
+  const openEditModal = (item) => {
+    setEditingItem(item)
+
+    if (item.itemType === 'food') {
+      setEditFormData({
+        name: item.name || '',
+        brand: item.brand || '',
+        calories: item.calories || item.caloriesPer100g || item.caloriesper100g || 0,
+        protein: item.protein || 0,
+        carbs: item.carbs || 0,
+        fat: item.fat || 0,
+      })
+      return
+    }
+
+    setEditFormData({
+      name: item.name || '',
+      description: item.description || '',
+      servings: item.servings || 1,
+      caloriesPerServing: item.caloriesPerServing || 0,
+      protein: item.protein || 0,
+      carbs: item.carbs || 0,
+      fat: item.fat || 0,
+    })
+  }
+
+  const closeEditModal = () => {
+    setEditingItem(null)
+    setEditFormData({})
+  }
+
+  const handleEditFormChange = (event) => {
+    const { name, value } = event.target
+    setEditFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSaveEdit = async (event) => {
+    event.preventDefault()
+    if (!editingItem?.entityId) {
+      setSaveMessage({ type: 'error', text: 'A szerkesztéshez hiányzik az azonosító.' })
+      return
+    }
+
+    setIsMutating(true)
+    setSaveMessage(null)
+
+    try {
+      if (editingItem.itemType === 'food') {
+        await updateFood(editingItem.entityId, {
+          name: editFormData.name,
+          brand: editFormData.brand,
+          caloriesper100g: Number(editFormData.calories) || 0,
+          protein: Number(editFormData.protein) || 0,
+          carbs: Number(editFormData.carbs) || 0,
+          fat: Number(editFormData.fat) || 0,
+        })
+      } else {
+        await updateRecipe(editingItem.entityId, {
+          name: editFormData.name,
+          description: editFormData.description,
+          servings: Number(editFormData.servings) || 1,
+          caloriesPerServing: Number(editFormData.caloriesPerServing) || 0,
+          protein: Number(editFormData.protein) || 0,
+          carbs: Number(editFormData.carbs) || 0,
+          fat: Number(editFormData.fat) || 0,
+        })
+      }
+
+      setSaveMessage({ type: 'success', text: 'Elem sikeresen frissítve.' })
+      closeEditModal()
+      await loadUserFoods()
+    } catch (err) {
+      console.error('Edit item error:', err)
+      setSaveMessage({ type: 'error', text: 'Szerkesztés közben hiba történt.' })
+    } finally {
+      setIsMutating(false)
+    }
+  }
+
+  const openDeleteConfirm = (item) => {
+    setDeleteTarget(item)
+  }
+
+  const closeDeleteConfirm = () => {
+    setDeleteTarget(null)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget?.entityId) {
+      setSaveMessage({ type: 'error', text: 'A törléshez hiányzik az azonosító.' })
+      closeDeleteConfirm()
+      return
+    }
+
+    setIsMutating(true)
+    setSaveMessage(null)
+
+    try {
+      if (deleteTarget.itemType === 'food') {
+        await deleteFood(deleteTarget.entityId)
+      } else {
+        await deleteRecipe(deleteTarget.entityId)
+      }
+
+      setSaveMessage({ type: 'success', text: 'Elem sikeresen törölve.' })
+      closeDeleteConfirm()
+      await loadUserFoods()
+    } catch (err) {
+      console.error('Delete item error:', err)
+      setSaveMessage({ type: 'error', text: 'Törlés közben hiba történt.' })
+    } finally {
+      setIsMutating(false)
     }
   }
 
@@ -363,8 +523,19 @@ export function FoodSearch() {
                     </div>
                   </div>
                   <div className="food-search-item-actions">
-                    <button className="recipe-view-btn">
-                      👁️ Megtekintés
+                    <button
+                      className="food-search-edit-btn"
+                      type="button"
+                      onClick={() => openEditModal(item)}
+                    >
+                      Szerkesztés
+                    </button>
+                    <button
+                      className="food-search-delete-btn"
+                      type="button"
+                      onClick={() => openDeleteConfirm(item)}
+                    >
+                      Törlés
                     </button>
                   </div>
                 </div>
@@ -503,6 +674,80 @@ export function FoodSearch() {
                   </button>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {editingItem && (
+        <div className="recipe-modal-overlay">
+          <div className="recipe-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="recipe-modal-header">
+              <h2>{editingItem.itemType === 'food' ? 'Étel szerkesztése' : 'Recept szerkesztése'}</h2>
+              <button className="recipe-modal-close" onClick={closeEditModal}>✕</button>
+            </div>
+            <form className="recipe-modal-content" onSubmit={handleSaveEdit}>
+              <div className="recipe-name-form">
+                <label className="recipe-name-label" htmlFor="edit-name">Név</label>
+                <input id="edit-name" className="recipe-name-input" name="name" value={editFormData.name || ''} onChange={handleEditFormChange} />
+              </div>
+
+              {editingItem.itemType === 'food' ? (
+                <>
+                  <div className="recipe-name-form">
+                    <label className="recipe-name-label" htmlFor="edit-brand">Márka</label>
+                    <input id="edit-brand" className="recipe-name-input" name="brand" value={editFormData.brand || ''} onChange={handleEditFormChange} />
+                  </div>
+                  <div className="recipe-modal-nutrition-totals-list">
+                    <input className="recipe-name-input" type="number" step="0.1" name="calories" placeholder="kcal/100g" value={editFormData.calories || ''} onChange={handleEditFormChange} />
+                    <input className="recipe-name-input" type="number" step="0.1" name="protein" placeholder="fehérje" value={editFormData.protein || ''} onChange={handleEditFormChange} />
+                    <input className="recipe-name-input" type="number" step="0.1" name="carbs" placeholder="szénhidrát" value={editFormData.carbs || ''} onChange={handleEditFormChange} />
+                    <input className="recipe-name-input" type="number" step="0.1" name="fat" placeholder="zsír" value={editFormData.fat || ''} onChange={handleEditFormChange} />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="recipe-name-form">
+                    <label className="recipe-name-label" htmlFor="edit-description">Leírás</label>
+                    <input id="edit-description" className="recipe-name-input" name="description" value={editFormData.description || ''} onChange={handleEditFormChange} />
+                  </div>
+                  <div className="recipe-modal-nutrition-totals-list">
+                    <input className="recipe-name-input" type="number" step="1" name="servings" placeholder="adag" value={editFormData.servings || ''} onChange={handleEditFormChange} />
+                    <input className="recipe-name-input" type="number" step="1" name="caloriesPerServing" placeholder="kcal/adag" value={editFormData.caloriesPerServing || ''} onChange={handleEditFormChange} />
+                    <input className="recipe-name-input" type="number" step="0.1" name="protein" placeholder="fehérje" value={editFormData.protein || ''} onChange={handleEditFormChange} />
+                    <input className="recipe-name-input" type="number" step="0.1" name="carbs" placeholder="szénhidrát" value={editFormData.carbs || ''} onChange={handleEditFormChange} />
+                    <input className="recipe-name-input" type="number" step="0.1" name="fat" placeholder="zsír" value={editFormData.fat || ''} onChange={handleEditFormChange} />
+                  </div>
+                </>
+              )}
+
+              <div className="food-search-item-actions">
+                <button type="submit" className="food-search-edit-btn" disabled={isMutating}>
+                  {isMutating ? 'Mentés...' : 'Mentés'}
+                </button>
+                <button type="button" className="food-search-delete-btn" onClick={closeEditModal}>
+                  Mégse
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {deleteTarget && (
+        <div className="recipe-modal-overlay">
+          <div className="delete-confirm" onClick={(e) => e.stopPropagation()}>
+            <h3>Törlés megerősítése</h3>
+            <p>
+              Biztosan törölni szeretnéd ezt az elemet: <strong>{deleteTarget.name}</strong>?
+            </p>
+            <div className="food-search-item-actions">
+              <button className="food-search-delete-btn" type="button" onClick={handleConfirmDelete} disabled={isMutating}>
+                {isMutating ? 'Törlés...' : 'Igen, törlöm'}
+              </button>
+              <button className="food-search-edit-btn" type="button" onClick={closeDeleteConfirm}>
+                Mégse
+              </button>
             </div>
           </div>
         </div>
