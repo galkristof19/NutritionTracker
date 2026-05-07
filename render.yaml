@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: nutrition-tracker-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
