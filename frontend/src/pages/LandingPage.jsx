@@ -1,165 +1,121 @@
 import { Link } from 'react-router-dom'
 import './LandingPage.scss'
 
-const GOALS = [
-  'Fogyas es testsuly kontroll',
-  'Tomegnoveles pontos kaloria tervezessel',
-  'Makrotapanyag egyensuly javitasa',
-  'Specialis etrend kovetese',
+const highlights = [
+	{ label: 'Naponta aktiv felhasznalo', value: '1 200+' },
+	{ label: 'Naplozott etkezes / het', value: '18 000+' },
+	{ label: 'Atlagos napi megtartas', value: '87%' },
 ]
 
-const FEATURES = [
-  {
-    title: 'Dashboard es naplo',
-    text: 'Napi kaloriakeret, bevitel es fennmarado keret attekintheto egy helyen.',
-  },
-  {
-    title: 'Gyors etelkereso',
-    text: 'Rogzits etelt mennyiseggel, szerkesztheto bejegyzesekkel.',
-  },
-  {
-    title: 'Statisztika modul',
-    text: 'Heti trendek, sulyvaltozas es celhoz viszonyitott haladas.',
-  },
-  {
-    title: 'Szemelyre szabhato profil',
-    text: 'Aktivitasi szint, biometria, napi celok - mind testre szabva.',
-  },
+const featureCards = [
+	{
+		title: 'Gyors etkezesnaplo',
+		text: 'Masodpercek alatt rogzitheted a napi etkezeseidet, stabil rutinra epitve a tervezest.',
+		tone: 'primary',
+	},
+	{
+		title: 'Intelligens food search',
+		text: 'Talalj eteleket gyorsan, rendezetten, majd add a naplohoz egyetlen mozdulattal.',
+		tone: 'accent',
+	},
+	{
+		title: 'Heti trend attekintes',
+		text: 'Lathato mintakat kapsz kaloria es makro szinten, hogy jobb donteseket hozz nap mint nap.',
+		tone: 'secondary',
+	},
 ]
 
-const OPINIONS = [
-  {
-    name: 'Dora, 29',
-    quote: 'Vegre latom, hogy naponta mennyit eszek es hol csuszom el.',
-  },
-  {
-    name: 'Bence, 34',
-    quote: 'A dashboard alapjan sokkal egyszerubb a meal prep es a heti terv.',
-  },
-  {
-    name: 'Lili, 25',
-    quote: 'A statisztikak miatt konnyebb tartani a motivaciot.',
-  },
+const steps = [
+	{
+		title: 'Cel beallitasa',
+		text: 'Add meg az alapadataidat es a celodat, az app ehhez igazodva mutatja az iranyt.',
+	},
+	{
+		title: 'Napi rogzites',
+		text: 'Etkezesenkent vezeted, mit ettel, mennyit es mikor. A napi kep azonnal tisztabb lesz.',
+	},
+	{
+		title: 'Folyamatos finomhangolas',
+		text: 'A heti statisztikak alapjan latod, mi mukodik, es mit erdemes korrigalni.',
+	},
 ]
 
 export function LandingPage() {
-  return (
-    <div className='landing-page'>
-      <section className='landing-page__hero' aria-labelledby='hero-title'>
-        <div className='landing-page__hero-content'>
-          <p className='landing-page__eyebrow'>Mindful nutrition app</p>
-          <h1 className='landing-page__title' id='hero-title'>
-            Merd a fejlodesed, ne csak talalgass.
-          </h1>
-          <p className='landing-page__subtitle'>
-            A LockIn segit atlatni etkezesi szokasaidat, hogy tisztan lasd a
-            kaloriat, a makrokat es a napi celjaid teljesuleset.
-          </p>
-          <div className='landing-page__hero-actions'>
-            <Link to='/login' className='landing-page__button landing-page__button--primary'>
-              Kezdes most
-            </Link>
-            <a href='#features' className='landing-page__button landing-page__button--ghost'>
-              Feature lista
-            </a>
-          </div>
-        </div>
+	return (
+		<section className='landing-page'>
+			<header className='landing-page__hero'>
+				<div className='landing-page__hero-copy'>
+					<p className='landing-page__eyebrow'>Tudatos etkezes, letisztult rendszer</p>
+					<h1 className='landing-page__title'>
+						Epitd fel a napi rutint ugy, hogy latszodjon a haladasod.
+					</h1>
+					<p className='landing-page__lead'>
+						A LockIn egy atlathato etkezeskezelo felulet, ahol a naplozas, a keresett etelek
+						es a statisztikak egy helyen tamogatjak a celjaidat.
+					</p>
 
-        <picture className='landing-page__hero-media'>
-          <source
-            media='(min-width: 1200px)'
-            srcSet='/landing/hero-1280.svg 1280w, /landing/hero-640.svg 640w'
-            sizes='(min-width: 1200px) 36rem, 100vw'
-          />
-          <source
-            media='(min-width: 768px)'
-            srcSet='/landing/hero-1280.svg 1280w, /landing/hero-640.svg 640w'
-            sizes='(min-width: 768px) 50vw, 100vw'
-          />
-          <img
-            src='/landing/hero-640.svg'
-            alt='Kaloria dashboard illusztracio'
-            loading='eager'
-            decoding='async'
-          />
-        </picture>
-      </section>
+					<div className='landing-page__hero-actions'>
+						<Link to='/register' className='landing-page__button landing-page__button--primary'>
+							Ingyenes kezdes
+						</Link>
+						<Link to='/login' className='landing-page__button landing-page__button--ghost'>
+							Mar van fiokom
+						</Link>
+					</div>
+				</div>
+			</header>
 
-      <section className='landing-page__section' id='preview' aria-labelledby='preview-title'>
-        <h2 id='preview-title'>Termek elo-nezet</h2>
-        <div className='landing-page__media-grid'>
-          <picture className='landing-page__media-card'>
-            <source
-              media='(min-width: 768px)'
-              srcSet='/landing/preview-dashboard-1280.svg 1280w, /landing/preview-dashboard-640.svg 640w'
-              sizes='(min-width: 1200px) 32rem, (min-width: 768px) 48vw, 100vw'
-            />
-            <img
-              src='/landing/preview-dashboard-640.svg'
-              alt='Napi kaloria osszegzo nezet'
-              loading='lazy'
-              decoding='async'
-            />
-          </picture>
+			<section className='landing-page__highlights' aria-label='Kiemelt mutatok'>
+				{highlights.map((item) => (
+					<article className='landing-page__highlight' key={item.label}>
+						<p className='landing-page__highlight-value'>{item.value}</p>
+						<p className='landing-page__highlight-label'>{item.label}</p>
+					</article>
+				))}
+			</section>
 
-          <picture className='landing-page__media-card'>
-            <source
-              media='(min-width: 768px)'
-              srcSet='/landing/preview-diary-1280.svg 1280w, /landing/preview-diary-640.svg 640w'
-              sizes='(min-width: 1200px) 32rem, (min-width: 768px) 48vw, 100vw'
-            />
-            <img
-              src='/landing/preview-diary-640.svg'
-              alt='Etkezesi naplo lista nezet'
-              loading='lazy'
-              decoding='async'
-            />
-          </picture>
-        </div>
-      </section>
+			<section className='landing-page__features' id='features'>
+				<header className='landing-page__section-header'>
+					<p className='landing-page__section-eyebrow'>Ami miatt konnyu hasznalni</p>
+					<h2 className='landing-page__section-title'>Minden funkcio egy ertelmes folyamatba rendezve</h2>
+				</header>
 
-      <section className='landing-page__section' id='motivation' aria-labelledby='motivation-title'>
-        <h2 id='motivation-title'>Motivacio</h2>
-        <p>
-          Nem kell tokeletesnek lenned. Eleg, ha kovetkezetes vagy. A LockIn
-          segit napi szinten fenntartani a ritmust egyszeru es gyors rogzitessel.
-        </p>
-      </section>
+				<div className='landing-page__feature-grid'>
+					{featureCards.map((feature) => (
+						<article className={`landing-page__feature-card is-${feature.tone}`} key={feature.title}>
+							<h3 className='landing-page__feature-title'>{feature.title}</h3>
+							<p className='landing-page__feature-text'>{feature.text}</p>
+						</article>
+					))}
+				</div>
+			</section>
 
-      <section className='landing-page__section' id='goals' aria-labelledby='goals-title'>
-        <h2 id='goals-title'>Reach Your Goals</h2>
-        <ul className='landing-page__goals' role='list'>
-          {GOALS.map((goal) => (
-            <li key={goal} className='landing-page__goal-card'>
-              {goal}
-            </li>
-          ))}
-        </ul>
-      </section>
+			<section className='landing-page__workflow' aria-label='Mukodes roviden'>
+				<header className='landing-page__section-header'>
+					<p className='landing-page__section-eyebrow'>Hogyan mukodik?</p>
+					<h2 className='landing-page__section-title'>Harom lepes, amit tenyleg tartani tudsz</h2>
+				</header>
 
-      <section className='landing-page__section' id='features' aria-labelledby='features-title'>
-        <h2 id='features-title'>Features List</h2>
-        <div className='landing-page__features'>
-          {FEATURES.map((feature) => (
-            <article key={feature.title} className='landing-page__feature-card'>
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+				<ol className='landing-page__steps'>
+					{steps.map((step, index) => (
+						<li className='landing-page__step' key={step.title}>
+							<span className='landing-page__step-index'>0{index + 1}</span>
+							<div>
+								<h3 className='landing-page__step-title'>{step.title}</h3>
+								<p className='landing-page__step-text'>{step.text}</p>
+							</div>
+						</li>
+					))}
+				</ol>
+			</section>
 
-      <section className='landing-page__section' id='opinions' aria-labelledby='opinions-title'>
-        <h2 id='opinions-title'>Opinions</h2>
-        <div className='landing-page__opinions'>
-          {OPINIONS.map((opinion) => (
-            <figure key={opinion.name} className='landing-page__opinion-card'>
-              <blockquote>{opinion.quote}</blockquote>
-              <figcaption>{opinion.name}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-    </div>
-  )
+			<section className='landing-page__bottom-cta'>
+				<p className='landing-page__bottom-cta-eyebrow'>Kesz vagy a stabil rutinra?</p>
+				<h2 className='landing-page__bottom-cta-title'>Indulj el ma, es epits merheto fejlodest hetek alatt.</h2>
+				<Link to='/register' className='landing-page__button landing-page__button--primary'>
+					Regisztralok
+				</Link>
+			</section>
+		</section>
+	)
 }

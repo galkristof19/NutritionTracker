@@ -60,7 +60,9 @@ export default function AppRoutes() {
     <Routes>
       <Route path='/' element={<LandingLayout />}>
         <Route index element={
-          user && role === 'admin' ? (
+          user && !onboardingComplete ? (
+            <Navigate to='/onboarding' replace />
+          ) : user && role === 'admin' ? (
             <Navigate to='/admin' replace />
           ) : (
             <LandingPage />
@@ -69,7 +71,9 @@ export default function AppRoutes() {
         <Route
           path='login'
           element={
-            user ? (
+            user && !onboardingComplete ? (
+              <Navigate to='/onboarding' replace />
+            ) : user ? (
               <Navigate to={onboardingComplete ? '/user/dashboard' : '/onboarding'} replace />
             ) : (
               <AuthPage />
@@ -79,7 +83,9 @@ export default function AppRoutes() {
         <Route
           path='register'
           element={
-            user ? (
+            user && !onboardingComplete ? (
+              <Navigate to='/onboarding' replace />
+            ) : user ? (
               <Navigate to={onboardingComplete ? '/user/dashboard' : '/onboarding'} replace />
             ) : (
               <RegisterPage />

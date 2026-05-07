@@ -1,0 +1,66 @@
+@use '../styles/tokens' as *;
+
+.login-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, $color-bg-page 0%, $color-bg-page 100%);
+  color: $color-text-primary;
+}
+
+.login-layout__header {
+  width: 100%;
+  padding: $space-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.login-layout__brand {
+  text-decoration: none;
+  font-family: $font-family-heading;
+  font-size: $font-size-2xl;
+  color: $color-primary-500;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &--disabled {
+    color: $color-text-secondary;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
+.login-layout__main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-6 $space-4;
+}
+
+.login-layout__inner {
+  width: 100%;
+  max-width: 44rem; /* keep auth card comfortable */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-2;
+}
+
+@media (min-width: 768px) {
+  .login-layout__main {
+    padding: $space-8 $space-6;
+  }
+
+  .login-layout__inner {
+    padding: $space-4;
+  }
+}
